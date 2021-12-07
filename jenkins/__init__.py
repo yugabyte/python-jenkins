@@ -1499,7 +1499,7 @@ class Jenkins(object):
         for node in nodes:
             # the name returned is not the name to lookup when
             # dealing with master :/
-            if node['name'] == 'master':
+            if node['name'] == 'master' or node['name'] == "Built-In Node":
                 node_name = '(master)'
             else:
                 node_name = node['name']
