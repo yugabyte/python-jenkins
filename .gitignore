@@ -19,3 +19,6 @@
 cover/
 
 /.stestr
+
+.eggs
+PKG-INFO
