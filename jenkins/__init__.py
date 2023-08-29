@@ -1451,6 +1451,9 @@ class Jenkins(object):
                 node_name = node['name']
             try:
                 info = self.get_node_info(node_name, depth=2)
+            except NotFoundException:
+                logging.warning('Ignoring node not found: ' + node_name)
+                continue
             except JenkinsException as e:
                 # Jenkins may 500 on depth >0. If the node info comes back
                 # at depth 0 treat it as a node not running any jobs.
@@ -1507,9 +1510,9 @@ class Jenkins(object):
             if response:
                 return json.loads(response)
             else:
-                raise JenkinsException('node[%s] does not exist' % name)
+                raise NotFoundException('node[%s] does not exist' % name)
         except (req_exc.HTTPError, NotFoundException):
-            raise JenkinsException('node[%s] does not exist' % name)
+            raise NotFoundException('node[%s] does not exist' % name)
         except ValueError:
             raise JenkinsException("Could not parse JSON info for node[%s]"
                                    % name)
